@@ -47,7 +47,9 @@ new Curl().upload(uri, key ,fileUri, mimeType, onDone, onFailed, debug)
 ```
 Arguments
 - uri (string) - uri or url 
-- post (object) - post with key-value to post
+- key (string) - key for post fileupload
+- fileUri (string) - uri from local file
+- mimeType (string) - mimeType of file | default : 'image/jpeg '
 - onDone(callback) - callback with 2 param (result , message)
   - result: result of curl
   - message: message of curl
