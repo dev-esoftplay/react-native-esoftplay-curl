@@ -2,7 +2,7 @@
 A Curl with esoftplay configuration
 
 #### Instalation
-1. 
+1. install the npm package
 ```
 npm install --save react-native-esoftplay-curl
 ```
