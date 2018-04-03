@@ -1,6 +1,7 @@
 import react from 'react';
 import momentTimeZone from 'moment-timezone'
 import moment from 'moment/min/moment-with-locales'
+import config from '../../config';
 
 /* 
   CONTOH
@@ -42,17 +43,18 @@ import moment from 'moment/min/moment-with-locales'
 
 export default class EsoftplayCurl {
 
+  isDebug = config.isDebug
   url = null
   uri = null
   post = null
   header = {}
 
-  constructor(uri = null, post = null, onDone = null, onFailed = null) {
+  constructor(uri = null, post = null, onDone = null, onFailed = null, debug = 0) {
     if (uri !== null)
-      this.init(uri, post, onDone, onFailed)
+      this.init(uri, post, onDone, onFailed, debug)
   }
 
-  upload(uri, postkey = null, fileuri = null, type = null, onDone = null, onFailed = null) {
+  upload(uri, postkey = null, fileuri = null, type = null, onDone = null, onFailed = null, debug = 0) {
     postkey = postkey || 'image'
     var uName = fileuri.substring(fileuri.lastIndexOf("/") + 1, fileuri.length)
     var uType = type || "image/jpeg"
@@ -63,7 +65,7 @@ export default class EsoftplayCurl {
         name: uName
       }
     }
-    this.init(uri, post, onDone, onFailed)
+    this.init(uri, post, onDone, onFailed, debug)
   }
 
   setUrl(url) {
@@ -74,7 +76,7 @@ export default class EsoftplayCurl {
     this.uri = uri
   }
 
-  async init(uri, post, onDone, onFailed) {
+  async init(uri, post, onDone, onFailed, debug) {
     if (post) {
       let fd = new FormData();
       Object.keys(post).map(function (key) {
@@ -99,6 +101,8 @@ export default class EsoftplayCurl {
       headers: this.header,
       body: this.post
     }
+    if (debug == 1)
+      this.configConsole(this.url + this.uri, options)
     var res
     res = await fetch(this.url + this.uri, options)
     var resText = await res.text()
@@ -112,11 +116,11 @@ export default class EsoftplayCurl {
         this.onFailed(resJson.message)
       }
     } else {
-    	this.onError(resText)
+      if (debug == 1) this.onError(resText)
     }
   }
 
-  async custom(uri, post, onDone) {
+  async custom(uri, post, onDone, debug = 0) {
     if (post) {
       let fd = new FormData();
       Object.keys(post).map(function (key) {
@@ -141,21 +145,22 @@ export default class EsoftplayCurl {
       headers: this.header,
       body: this.post
     }
+    if (debug == 1)
+      this.configConsole(this.url + this.uri, options)
     var res
     res = await fetch(this.url + this.uri, options)
     var resText = await res.text()
-   
     var resJson = (resText.startsWith('{')/*  && resText.endsWith('}')) */ || /* ( */resText.startsWith('[')/* && resText.endsWith(']') */) ? JSON.parse(resText) : null
     if (resJson) {
       if (onDone) onDone(resJson)
       this.onDone(resJson)
     } else {
-	  this.onError(resText)
+      if (debug == 1) this.onError(resText)
     }
   }
 
-  onError(msg){
-  	
+  onError(msg) {
+    this.configConsole(msg)
   }
 
   onDone(result, msg) {
@@ -167,7 +172,7 @@ export default class EsoftplayCurl {
   }
 
   async setHeader(header) {
-    
+
   }
 
   getTimeByTimeZone(timeZone) {
@@ -202,5 +207,11 @@ export default class EsoftplayCurl {
     var oneDay = 1000 * 60 * 60 * 24;
     var day = Math.floor(diff / oneDay);
     return day
+  }
+
+  configConsole() {
+    if (this.isDebug === 1) {
+      console.log(JSON.stringify(arguments, null, 2));
+    }
   }
 }
