@@ -2,16 +2,19 @@
 A Curl with esoftplay configuration
 
 #### Instalation
-
-1. Create class extends EsoftplayCurl
-2. override any variables or functions you want
-3. set main url
-3. done
+1. 
+```
+npm install --save react-native-esoftplay-curl
+```
+2. Create class extends EsoftplayCurl
+3. override any variables or functions you want
+4. set main url
 ```
 export default class Curl extends EsoftplayCurl {
   url = config.url
 }
 ```
+5. done
 
 #### Usage
 
