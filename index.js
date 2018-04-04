@@ -93,7 +93,7 @@ export default class EsoftplayCurl {
       this.setUrl(uri)
       this.setUri('')
     } else {
-      this.setUrl(this.url)
+      this.setUrl(config.url)
     }
     await this.setHeader(this.header)
     var options = {
@@ -137,7 +137,7 @@ export default class EsoftplayCurl {
       this.setUrl(uri)
       this.setUri('')
     } else {
-      this.setUrl(this.url)
+      this.setUrl(config.url)
     }
     await this.setHeader(this.header)
     var options = {
