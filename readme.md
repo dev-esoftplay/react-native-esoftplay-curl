@@ -11,6 +11,11 @@ npm install --save react-native-esoftplay-curl
 4. set main url
 ```
 export default class Curl extends EsoftplayCurl {
+  //require
+  constructor() {
+    super()
+  }
+  
   url = config.url
 }
 ```
